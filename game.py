@@ -35,9 +35,8 @@ from models import Dungeon, Item, ItemType, NPC, NPCType, Player, RoomType
 from npc_decision_tree import NPCAction, NPCBehaviorManager
 
 
-# ---------------------------------------------------------------------------
 # Player factory
-# ---------------------------------------------------------------------------
+
 
 def make_player(name: str = "Hero",
                 player_class: str = "Warrior") -> Player:
@@ -79,9 +78,8 @@ def make_player(name: str = "Hero",
     )
 
 
-# ---------------------------------------------------------------------------
 # GameStatus — multi-enemy support
-# ---------------------------------------------------------------------------
+
 
 @dataclass
 class GameStatus:
@@ -93,9 +91,9 @@ class GameStatus:
     victory: bool = False
 
 
-# ---------------------------------------------------------------------------
+
 # GameState
-# ---------------------------------------------------------------------------
+
 
 class GameState:
     """All mutable game state + actions. The GUI is a thin shell over this."""
@@ -137,7 +135,7 @@ class GameState:
                  f"ATK {self.player.attack} · DEF {self.player.defense}")
         self._announce_room_entry()
 
-    # -- helpers -----------------------------------------------------------
+    # -- helpers 
 
     def log(self, msg: str) -> None:
         self.event_log.append(msg)
@@ -176,7 +174,7 @@ class GameState:
             for npc in room.npcs:
                 self.log(f"You see a {npc.name} ({npc.npc_type.value}).")
 
-    # -- actions: movement -------------------------------------------------
+    # -- actions: movement 
 
     def move(self, coords: Tuple[int, int]) -> bool:
         if self.status.game_over:
@@ -220,7 +218,7 @@ class GameState:
         self._announce_room_entry()
         return True
 
-    # -- actions: combat ---------------------------------------------------
+    # -- actions: combat
 
     def attack(self, target_idx: Optional[int] = None) -> None:
         if not self.status.in_combat or not self.status.combat_enemies:
@@ -367,7 +365,7 @@ class GameState:
             self.status.in_combat = False
             self.log("Combat cleared!")
 
-    # -- actions: items / NPCs --------------------------------------------
+    # -- actions: items / NPCs 
 
     def pick_up(self, item_index: int) -> None:
         room = self.current_room()
@@ -440,7 +438,7 @@ class GameState:
             room.npcs.remove(npc)
         npc.met = True
 
-    # -- actions: skill checks --------------------------------------------
+    # -- actions: skill checks 
 
     def can_force_boss_door(self) -> bool:
         if self.status.in_combat or self.status.game_over:
@@ -536,7 +534,7 @@ class GameState:
                      f"You hurt yourself for {dmg}.")
             self._check_death()
 
-    # -- death check -------------------------------------------------------
+    # -- death check 
 
     def _check_death(self) -> None:
         if self.player.hp <= 0:
