@@ -15,11 +15,7 @@ from models import Dungeon, Room, RoomType, Item, ItemType, NPC, NPCType
 from collections import deque
 import random
 
-
-# ---------------------------------------------------------------------------
 # Base
-# ---------------------------------------------------------------------------
-
 class BaseDungeonGenerator:
     """Base class for dungeon generators (shared helpers + populate logic)."""
 
@@ -48,7 +44,7 @@ class BaseDungeonGenerator:
         neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
         return [n for n in neighbors if self.is_valid_position(n)]
 
-    # -- shared post-generation populate (items + NPCs) -------------------
+    # -- shared post-generation populate (items + NPCs) 
 
     def populate_rooms(self):
         """Add items and NPCs to rooms after the layout is fixed."""
@@ -105,7 +101,7 @@ class BaseDungeonGenerator:
                     dialogue=["You dare challenge me?!"],
                 ))
 
-    # -- step API ---------------------------------------------------------
+    # -- step API 
 
     def finalize(self) -> Dungeon:
         """Call after a ``succeed`` event to populate content and return."""
@@ -117,10 +113,7 @@ class BaseDungeonGenerator:
         raise NotImplementedError
 
 
-# ---------------------------------------------------------------------------
 # BFS
-# ---------------------------------------------------------------------------
-
 class BFSDungeonGenerator(BaseDungeonGenerator):
     """Breadth-first dungeon expansion from a centre point."""
 
@@ -214,10 +207,7 @@ class BFSDungeonGenerator(BaseDungeonGenerator):
         return random.choice(types)
 
 
-# ---------------------------------------------------------------------------
 # DFS
-# ---------------------------------------------------------------------------
-
 class DFSDungeonGenerator(BaseDungeonGenerator):
     """Depth-first dungeon expansion (long winding corridors)."""
 
@@ -304,11 +294,7 @@ class DFSDungeonGenerator(BaseDungeonGenerator):
         types = [RoomType.NORMAL] * 5 + [RoomType.TREASURE] * 2 + [RoomType.TRAP, RoomType.MERCHANT]
         return random.choice(types)
 
-
-# ---------------------------------------------------------------------------
 # Greedy
-# ---------------------------------------------------------------------------
-
 class GreedyDungeonGenerator(BaseDungeonGenerator):
     """Greedy dungeon expansion guided by a distance/clustering heuristic."""
 
@@ -392,11 +378,7 @@ class GreedyDungeonGenerator(BaseDungeonGenerator):
         types = [RoomType.NORMAL] * 5 + [RoomType.TREASURE] * 2 + [RoomType.TRAP, RoomType.MERCHANT]
         return random.choice(types)
 
-
-# ---------------------------------------------------------------------------
 # Smoke test
-# ---------------------------------------------------------------------------
-
 if __name__ == "__main__":
     import time
 
