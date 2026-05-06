@@ -47,9 +47,7 @@ ATTACK_GRID = [5, 10, 15, 20, 25, 30]
 DEFENSE_GRID = [0, 5, 10, 15, 20, 25]
 
 
-# ---------------------------------------------------------------------------
 # 1. Calibration sweep
-# ---------------------------------------------------------------------------
 
 def evaluate_calibration() -> List[dict]:
     sys_ = BayesianCombatSystem()
@@ -78,9 +76,7 @@ def evaluate_calibration() -> List[dict]:
     return rows
 
 
-# ---------------------------------------------------------------------------
 # 2. Win-rate matrix (full combats)
-# ---------------------------------------------------------------------------
 
 def simulate_combat(player_atk: int, player_def: int,
                     enemy_atk: int, enemy_def: int,
@@ -122,9 +118,7 @@ def evaluate_winrate_matrix(n_trials: int = 200) -> List[dict]:
     return rows
 
 
-# ---------------------------------------------------------------------------
 # 3. Bayesian vs random-coin baseline
-# ---------------------------------------------------------------------------
 
 def simulate_random_combat(player_hp: int = 100,
                            enemy_hp: int = 60,
@@ -161,9 +155,7 @@ def evaluate_duration_distribution(n_trials: int = 1000) -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
 # CSV + plots
-# ---------------------------------------------------------------------------
 
 def write_csv(rows, path):
     with open(path, "w", newline="") as f:
