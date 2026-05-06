@@ -36,9 +36,7 @@ RESULTS_DIR = ROOT / "results"
 RESULTS_DIR.mkdir(exist_ok=True)
 
 
-# ---------------------------------------------------------------------------
 # Run config
-# ---------------------------------------------------------------------------
 
 CONFIGS = [
     # (grid_size, num_rooms)
@@ -60,9 +58,7 @@ ALGORITHMS = {
 NUM_SEEDS = 30
 
 
-# ---------------------------------------------------------------------------
 # Single-run wrapper
-# ---------------------------------------------------------------------------
 
 def run_one(algo: str, grid: int, n_rooms: int, seed: int) -> dict:
     gen = ALGORITHMS[algo](grid, grid, n_rooms, seed)
@@ -71,7 +67,7 @@ def run_one(algo: str, grid: int, n_rooms: int, seed: int) -> dict:
     try:
         with redirect_stdout(buf):
             dungeon = gen.generate()
-    except Exception as e:  # pragma: no cover — surfaces in CSV as failure row
+    except Exception as e:  # pragma: no cover, surfaces in CSV as failure row
         return {
             "algo": algo, "grid": grid, "n_rooms": n_rooms, "seed": seed,
             "time_s": time.perf_counter() - t0,
@@ -94,9 +90,7 @@ def run_one(algo: str, grid: int, n_rooms: int, seed: int) -> dict:
     return row
 
 
-# ---------------------------------------------------------------------------
 # Main sweep
-# ---------------------------------------------------------------------------
 
 def run_sweep() -> List[dict]:
     rows: List[dict] = []
@@ -157,9 +151,7 @@ def summarize(rows: List[dict]) -> List[dict]:
     return out
 
 
-# ---------------------------------------------------------------------------
 # Plots
-# ---------------------------------------------------------------------------
 
 def make_plots(rows: List[dict], summary: List[dict]) -> None:
     import matplotlib
@@ -169,7 +161,7 @@ def make_plots(rows: List[dict], summary: List[dict]) -> None:
     algos = list(ALGORITHMS.keys())
     cfg_labels = [f"{g}x{g}/{n}r" for g, n in CONFIGS]
 
-    # --- Success rate bar chart ----------------------------------------------
+    # Success rate bar chart
     fig, ax = plt.subplots(figsize=(10, 5))
     width = 0.2
     x = list(range(len(CONFIGS)))
@@ -188,7 +180,7 @@ def make_plots(rows: List[dict], summary: List[dict]) -> None:
     fig.savefig(RESULTS_DIR / "dungeon_success_rate.png", dpi=130)
     plt.close(fig)
 
-    # --- Solvability rate ----------------------------------------------------
+    # Solvability rate 
     fig, ax = plt.subplots(figsize=(10, 5))
     for i, algo in enumerate(algos):
         ys = [next((s["solvable_rate"] for s in summary
@@ -221,7 +213,7 @@ def make_plots(rows: List[dict], summary: List[dict]) -> None:
     fig.savefig(RESULTS_DIR / "dungeon_time_scaling.png", dpi=130)
     plt.close(fig)
 
-    # --- Quality: branching factor + dead end ratio --------------------------
+    # Quality: branching factor + dead end ratio
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     for algo in algos:
         bs = [next((s["mean_branching"] for s in summary
@@ -243,10 +235,7 @@ def make_plots(rows: List[dict], summary: List[dict]) -> None:
     fig.savefig(RESULTS_DIR / "dungeon_quality.png", dpi=130)
     plt.close(fig)
 
-
-# ---------------------------------------------------------------------------
 # Entry point
-# ---------------------------------------------------------------------------
 
 def main() -> None:
     print(f"Running dungeon eval: {len(ALGORITHMS)} algos × "
