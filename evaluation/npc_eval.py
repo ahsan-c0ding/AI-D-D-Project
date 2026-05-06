@@ -41,9 +41,7 @@ RESULTS_DIR = ROOT / "results"
 RESULTS_DIR.mkdir(exist_ok=True)
 
 
-# ---------------------------------------------------------------------------
 # State sweep
-# ---------------------------------------------------------------------------
 
 PLAYER_HP_GRID = [10, 30, 50, 70, 100]
 NPC_HP_GRID = [5, 20, 40, 80]
@@ -119,9 +117,7 @@ def evaluate_coverage() -> List[dict]:
     return rows
 
 
-# ---------------------------------------------------------------------------
 # 2. Plausibility vs random baseline
-# ---------------------------------------------------------------------------
 
 def plausibility_score(npc_type: NPCType, state: dict, action: str) -> float:
     """
@@ -197,9 +193,7 @@ def evaluate_plausibility(coverage_rows: List[dict]) -> List[dict]:
     return out
 
 
-# ---------------------------------------------------------------------------
 # CSV + plots
-# ---------------------------------------------------------------------------
 
 def write_csv(rows, path):
     if not rows:
@@ -255,9 +249,7 @@ def make_plots(coverage: List[dict], plausibility: List[dict]) -> None:
     plt.close(fig)
 
 
-# ---------------------------------------------------------------------------
 # Entry point
-# ---------------------------------------------------------------------------
 
 def main() -> None:
     random.seed(0)
