@@ -58,9 +58,7 @@ except Exception:
     _HAVE_MATPLOTLIB = False
 
 
-# ---------------------------------------------------------------------------
 # Visual constants
-# ---------------------------------------------------------------------------
 
 ROOM_COLORS = {
     RoomType.START:    "#5b8def",
@@ -90,9 +88,7 @@ ALGORITHMS = {
 }
 
 
-# ===========================================================================
 # Generation Inspector tab
-# ===========================================================================
 
 class GenerationInspectorTab:
     """Animates a dungeon-generation algorithm one step at a time."""
@@ -116,7 +112,7 @@ class GenerationInspectorTab:
         # Initial blank canvas with default config
         self.reset()
 
-    # -- layout ------------------------------------------------------------
+    # layout
 
     def _build(self):
         outer = tk.Frame(self.parent, bg=GRID_BG)
@@ -240,7 +236,7 @@ class GenerationInspectorTab:
         self.log_box.pack(fill=tk.BOTH, expand=True)
         self.log_box.config(state=tk.DISABLED)
 
-    # -- control flow ------------------------------------------------------
+    # control flow
 
     def _make_generator(self):
         cls = ALGORITHMS[self.algo_var.get()]
@@ -324,7 +320,7 @@ class GenerationInspectorTab:
                 break
         self._on_complete()
 
-    # -- event handling ----------------------------------------------------
+    # event handling
 
     def _on_event(self, event: dict):
         self.last_event = event
@@ -369,7 +365,7 @@ class GenerationInspectorTab:
                       f"backtracks={self.last_event['backtracks']}")
         self._refresh()
 
-    # -- rendering ---------------------------------------------------------
+    # rendering 
 
     def _refresh(self):
         self._draw_canvas()
@@ -461,7 +457,7 @@ class GenerationInspectorTab:
                     text += f"  {k}: {e[k]}\n"
         self.counter_text.config(text=text)
 
-    # -- log ---------------------------------------------------------------
+    # log 
 
     def _log_event(self, event: dict):
         kind = event["kind"]
@@ -499,9 +495,7 @@ class GenerationInspectorTab:
         self.log_box.config(state=tk.DISABLED)
 
 
-# ===========================================================================
 # NPC Brain tab — interactive decision tree visualization
-# ===========================================================================
 
 # Action -> color used for leaf nodes
 ACTION_COLORS = {
@@ -550,7 +544,7 @@ class NPCBrainTab:
         self._build()
         self._on_state_change()  # initial render
 
-    # -- layout ------------------------------------------------------------
+    # layout 
 
     def _build(self):
         outer = tk.Frame(self.parent, bg=GRID_BG)
@@ -677,7 +671,7 @@ class NPCBrainTab:
                  fg="#cfcfcf", justify="left", anchor="w",
                  wraplength=320).pack(fill=tk.X)
 
-    # -- state assembly ----------------------------------------------------
+    # -- state assembly 
 
     def _build_player(self) -> Player:
         return Player(
@@ -707,7 +701,7 @@ class NPCBrainTab:
             "turn_count": 1,
         }
 
-    # -- recompute ---------------------------------------------------------
+    # recompute 
 
     def _on_state_change(self, *_):
         npc_type = NPCType(self.npc_type_var.get())
@@ -724,7 +718,7 @@ class NPCBrainTab:
         self._draw()
         self._draw_result()
 
-    # -- layout ------------------------------------------------------------
+    # layout 
 
     def _count_leaves(self, node: DecisionNode) -> int:
         if node is None:
@@ -759,7 +753,7 @@ class NPCBrainTab:
         if node.false_branch is not None:
             self._layout(node.false_branch, mid, x_max, y + self.LEVEL_H)
 
-    # -- draw --------------------------------------------------------------
+    # draw 
 
     def _draw(self):
         self.canvas.delete("all")
@@ -863,9 +857,7 @@ class NPCBrainTab:
         self.path_label.config(text="\n".join(lines))
 
 
-# ===========================================================================
 # Combat Math tab — Bayesian breakdown + live calibration plot
-# ===========================================================================
 
 class CombatMathTab:
     """
@@ -898,7 +890,7 @@ class CombatMathTab:
         self._build()
         self._refresh()
 
-    # -- layout ------------------------------------------------------------
+    # -- layout 
 
     def _build(self):
         outer = tk.Frame(self.parent, bg=GRID_BG)
@@ -1022,7 +1014,7 @@ class CombatMathTab:
         self.ax.legend(loc="lower right", facecolor="#1a1a1f",
                        edgecolor="#333", labelcolor="#cfcfcf")
 
-    # -- behaviour ---------------------------------------------------------
+    # behaviour 
 
     def _do_rolls(self, n: int):
         for _ in range(n):
@@ -1092,7 +1084,7 @@ class CombatMathTab:
         self._refresh()
         self._refresh_plot()
 
-    # -- render ------------------------------------------------------------
+    # render 
 
     def _refresh(self):
         b = self.last_breakdown
@@ -1173,10 +1165,7 @@ class CombatMathTab:
         self.canvas.draw()
 
 
-# ===========================================================================
 # Algorithm Comparison tab — runs the dungeon-generation sweep on demand
-# ===========================================================================
-
 class AlgorithmComparisonTab:
     """
     A 'research mode' tab. The user picks a configuration grid and a
@@ -1280,7 +1269,7 @@ class AlgorithmComparisonTab:
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         self.canvas.draw()
 
-    # -- run the sweep -----------------------------------------------------
+    # run the sweep 
 
     def _run_sweep(self):
         grid = self.grid_var.get()
@@ -1406,11 +1395,7 @@ class AlgorithmComparisonTab:
         self.fig.tight_layout()
         self.canvas.draw()
 
-
-# ===========================================================================
 # Play tab
-# ===========================================================================
-
 class PlayTab:
     """The playable D&D layer (decision tree NPCs + Bayesian combat + skill checks)."""
 
@@ -1532,7 +1517,7 @@ class PlayTab:
         self.log_box.pack(fill=tk.BOTH, expand=True)
         self.log_box.config(state=tk.DISABLED)
 
-    # -- handlers ----------------------------------------------------------
+    # handlers 
 
     def _on_move(self, direction):
         x, y = self.state.player.position
@@ -1649,7 +1634,7 @@ class PlayTab:
                     f"You fell after {self.state.turn} turns.\n"
                     f"Gold collected: {self.state.player.gold}")
 
-    # -- repaint -----------------------------------------------------------
+    # repaint 
 
     def refresh(self):
         self._draw_map()
@@ -1977,10 +1962,7 @@ class CharacterCreationDialog(tk.Toplevel):
         self.destroy()
 
 
-# ===========================================================================
 # Application shell
-# ===========================================================================
-
 class App:
     def __init__(self, root: tk.Tk, state: Optional[GameState] = None,
                  grid_size: int = 8, num_rooms: int = 12, seed: int = None,
@@ -2080,10 +2062,7 @@ class App:
             self._char_creation_done = True
             self._show_character_creation()
 
-# ---------------------------------------------------------------------------
 # Launcher
-# ---------------------------------------------------------------------------
-
 def launch(grid: int = 8, rooms: int = 12, seed: Optional[int] = None,
            player_name: str = "Hero", player_class: str = "Warrior") -> None:
     root = tk.Tk()
