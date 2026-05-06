@@ -59,10 +59,7 @@ class DungeonCSP:
         self.backtrack_count = 0
         self.nodes_explored = 0
 
-    # ------------------------------------------------------------------
     # Constraint helpers
-    # ------------------------------------------------------------------
-
     def is_valid_position(self, coords: Tuple[int, int]) -> bool:
         """Check if position is within bounds."""
         x, y = coords
@@ -155,11 +152,8 @@ class DungeonCSP:
                 return False
 
         return True
-
-    # ------------------------------------------------------------------
+                        
     # Variable & value ordering — circular growth heuristic (gameplay)
-    # ------------------------------------------------------------------
-
     def select_unassigned_variable(self) -> Optional[Tuple[int, int]]:
         """
         Circular Growth heuristic: prioritizes candidate positions closest
@@ -214,10 +208,7 @@ class DungeonCSP:
         random.shuffle(priority)
         return priority
 
-    # ------------------------------------------------------------------
     # Backtracking — one-shot wrapper + step-by-step generator
-    # ------------------------------------------------------------------
-
     def backtrack(self) -> bool:
         """
         CSP Backtracking algorithm (one-shot wrapper).
@@ -341,10 +332,8 @@ class DungeonCSP:
         self.populate_rooms()
         return self.dungeon
 
-    # ------------------------------------------------------------------
+  
     # Room descriptions
-    # ------------------------------------------------------------------
-
     def generate_room_description(self, room_type: RoomType) -> str:
         descriptions = {
             RoomType.START:    ["A dusty entrance with a faint breeze from above."],
@@ -360,10 +349,7 @@ class DungeonCSP:
         }
         return random.choice(descriptions.get(room_type, ["An empty room."]))
 
-    # ------------------------------------------------------------------
     # Population — diverse enemies, merchants, key insurance (gameplay)
-    # ------------------------------------------------------------------
-
     def populate_rooms(self) -> None:
         """Add items and NPCs to rooms after the layout is fixed."""
         for coords, room in self.assignment.items():
@@ -440,10 +426,9 @@ class DungeonCSP:
         name, hp, atk, def_, dialogue = random.choice(types)
         return NPC(name=name, npc_type=NPCType.ENEMY,
                    hp=hp, attack=atk, defense=def_, dialogue=dialogue)
+      
 
-    # ------------------------------------------------------------------
     # One-shot generation
-    # ------------------------------------------------------------------
 
     def generate(self) -> Optional[Dungeon]:
         """Run the CSP to completion and return a populated Dungeon, or None."""
