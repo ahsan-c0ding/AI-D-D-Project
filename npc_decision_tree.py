@@ -104,10 +104,7 @@ class DecisionNode:
         return node.action, path, branches
 
 
-# ---------------------------------------------------------------------------
 # Tree builders
-# ---------------------------------------------------------------------------
-
 class NPCDecisionTree:
     """Decision tree builders for each NPC type."""
 
@@ -116,7 +113,7 @@ class NPCDecisionTree:
     def _leaf(action: NPCAction) -> DecisionNode:
         return DecisionNode(action=action, label=action.value.upper())
 
-    # -- enemy ------------------------------------------------------------
+    # -- enemy 
 
     @staticmethod
     def build_enemy_tree() -> DecisionNode:
@@ -158,7 +155,7 @@ class NPCDecisionTree:
         root.false_branch = normal_health
         return root
 
-    # -- merchant ---------------------------------------------------------
+    # -- merchant 
 
     @staticmethod
     def build_merchant_tree() -> DecisionNode:
@@ -179,7 +176,7 @@ class NPCDecisionTree:
         root.false_branch = has_items
         return root
 
-    # -- friendly ---------------------------------------------------------
+    # -- friendly 
 
     @staticmethod
     def build_friendly_tree() -> DecisionNode:
@@ -200,7 +197,7 @@ class NPCDecisionTree:
         root.false_branch = first_encounter
         return root
 
-    # -- neutral ----------------------------------------------------------
+    # -- neutral 
 
     @staticmethod
     def build_neutral_tree() -> DecisionNode:
@@ -223,7 +220,7 @@ class NPCDecisionTree:
         root.false_branch = is_thief
         return root
 
-    # -- boss -------------------------------------------------------------
+    # -- boss 
 
     @staticmethod
     def build_boss_tree() -> DecisionNode:
@@ -244,7 +241,7 @@ class NPCDecisionTree:
         root.false_branch = player_strong
         return root
 
-    # -- dispatch ---------------------------------------------------------
+    # -- dispatch 
 
     @staticmethod
     def get_tree_for_npc(npc_type: NPCType) -> DecisionNode:
@@ -261,10 +258,7 @@ class NPCDecisionTree:
         return DecisionNode(action=NPCAction.IDLE, label="IDLE (default)")
 
 
-# ---------------------------------------------------------------------------
 # Behavior manager
-# ---------------------------------------------------------------------------
-
 class NPCBehaviorManager:
     """Manages NPC behavior using decision trees."""
 
@@ -310,10 +304,7 @@ class NPCBehaviorManager:
         return dialogue_map.get(action, "...")
 
 
-# ---------------------------------------------------------------------------
 # Smoke test
-# ---------------------------------------------------------------------------
-
 if __name__ == "__main__":
     from models import Item, ItemType  # noqa: F401
 
